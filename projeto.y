@@ -20,7 +20,7 @@ void yyerror(const char* s);
 
 %token <pfloat> NUMBER
 %token <sval> STRING
-%token PS KILL LS QUIT CALCULO MKDIR RMDIR CD TOUCH IFCONFIG
+%token PS KILL LS QUIT CALCULO MKDIR RMDIR CD TOUCH IFCONFIG START
 %token PLUS MINUS TIMES DIVIDE POWER
 %token LEFT RIGHT 
 %token END
@@ -74,6 +74,7 @@ Line:
 										}
      | TOUCH STRING END 			       {char cmd[1024]; strcpy(cmd,"/bin/touch ");strcat(cmd, $2); system(cmd); }
      | IFCONFIG END 				       {system("ifconfig"); }
+     | START STRING END 				{system($2); }
 ;
 
 Expression:

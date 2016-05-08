@@ -36,6 +36,7 @@ real {integer}("."{integer})?{exponent}?
 "cd" 		return CD;
 "touch" 	return TOUCH;
 "ifconfig"  return IFCONFIG;
+"start"         return START;
 
 [a-zA-Z0-9]+   {
 	yylval.sval = strdup(yytext);
