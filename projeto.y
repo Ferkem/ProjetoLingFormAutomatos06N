@@ -20,7 +20,7 @@ void yyerror(const char* s);
 
 %token <pfloat> NUMBER
 %token <sval> STRING
-%token PS KILL LS QUIT CALCULO MKDIR RMDIR CD
+%token PS KILL LS QUIT CALCULO MKDIR RMDIR CD TOUCH IFCONFIG
 %token PLUS MINUS TIMES DIVIDE POWER
 %token LEFT RIGHT 
 %token END
@@ -72,6 +72,8 @@ Line:
 												printf("Erro! Diretorio nao encontrado!\n");
 											}
 										}
+     | TOUCH STRING END 			       {char cmd[1024]; strcpy(cmd,"/bin/touch ");strcat(cmd, $2); system(cmd); }
+     | IFCONFIG END 				       {system("ifconfig"); }
 ;
 
 Expression:

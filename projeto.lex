@@ -33,7 +33,9 @@ real {integer}("."{integer})?{exponent}?
 "kill" 		return KILL;
 "mkdir" 	return MKDIR;
 "rmdir" 	return RMDIR;
-"cd" 	return CD;
+"cd" 		return CD;
+"touch" 	return TOUCH;
+"ifconfig"  return IFCONFIG;
 
 [a-zA-Z0-9]+   {
 	yylval.sval = strdup(yytext);
