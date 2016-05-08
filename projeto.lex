@@ -1,7 +1,9 @@
 %{
-#define YYSTYPE double
+
+#include <stdio.h>
+#define YY_DECL int yylex()
 #include "projeto.tab.h"
-#include <stdlib.h>
+
 %}
 
 white [ \t]+
@@ -11,8 +13,10 @@ exponent [eE][+-]?{integer}
 real {integer}("."{integer})?{exponent}?
 
 %%
+
+[ \t]          ;
 {white} { }
-{real} { yylval=atof(yytext); 
+{real} { yylval.pfloat=atof(yytext); 
  return NUMBER;
 }
 "+" 			return PLUS;
@@ -22,12 +26,17 @@ real {integer}("."{integer})?{exponent}?
 "^" 			return POWER;
 "(" 			return LEFT;
 ")" 			return RIGHT;
-"\n" 		return END;
 "ls" 		return LS;
 "ps" 		return PS;
 "quit" 		return QUIT;
 "calculo" 	return CALCULO;
 "kill" 		return KILL;
-.			return ERROR;
+"mkdir" 	return MKDIR;
 
+[a-zA-Z0-9]+   {
+	yylval.sval = strdup(yytext);
+	return STRING;
+}
+\n             return END;
+.              ;
 %%

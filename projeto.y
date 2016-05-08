@@ -1,22 +1,36 @@
 %{
-#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-void yyerror();
-#define YYSTYPE double
+#include <unistd.h>
+#include <math.h>
+
+extern int yylex();
+extern int yyparse();
+extern FILE* yyin;
+void yyerror(const char* s);
+
 %}
 
-%token NUMBER
+%union {
+	int integer;
+	float pfloat;
+	char *sval;
+}
+
+%token <pfloat> NUMBER
+%token <sval> STRING
+%token PS KILL LS QUIT CALCULO MKDIR
 %token PLUS MINUS TIMES DIVIDE POWER
-%token LEFT RIGHT
+%token LEFT RIGHT 
 %token END
-%token LS PS QUIT CALCULO KILL ERROR
 
 %left PLUS MINUS
 %left TIMES DIVIDE
 %left NEG
 %right POWER
+
+%type <pfloat> Expression
 
 %start Input
 %%
@@ -32,9 +46,8 @@ Line:
      | PS END 							{ system("ps"); }
      | QUIT END 							{ printf("Saindo do shell \n"); exit(0); }
      | KILL NUMBER END 				{char commandS[1024]; int n; n=(int)$2; snprintf(commandS, 1024, "kill %d", n); system(commandS); }
-     | ERROR END 						{ printf("Comando invalido\n"); }
+     | MKDIR STRING END 				{char cmd[1024]; strcpy(cmd,"/bin/mkdir ");strcat(cmd, $2); system(cmd); }
 ;
-
 
 Expression:
     	  NUMBER 								{ $$=$1; }
@@ -49,15 +62,13 @@ Expression:
 
 %%
 
-void yyerror(char *s) {
-	printf("%s\n", s);
-	yyparse();
-}
-
 int main() {
-  	if (yyparse())
-     		fprintf(stderr, "Successful parsing.\n");
- 	else
-     		fprintf(stderr, "error found.\n");
- 
+	yyin = stdin;
+	do { 
+		yyparse();
+	} while(!feof(yyin));
+	return 0;
+}
+void yyerror(const char* s) {
+	fprintf(stderr, "Comando/Argumento nao valido. Erro: %s\n", s);
 }
