@@ -32,6 +32,8 @@ real {integer}("."{integer})?{exponent}?
 "calculo" 	return CALCULO;
 "kill" 		return KILL;
 "mkdir" 	return MKDIR;
+"rmdir" 	return RMDIR;
+"cd" 	return CD;
 
 [a-zA-Z0-9]+   {
 	yylval.sval = strdup(yytext);

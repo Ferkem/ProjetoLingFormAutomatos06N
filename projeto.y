@@ -20,7 +20,7 @@ void yyerror(const char* s);
 
 %token <pfloat> NUMBER
 %token <sval> STRING
-%token PS KILL LS QUIT CALCULO MKDIR
+%token PS KILL LS QUIT CALCULO MKDIR RMDIR CD
 %token PLUS MINUS TIMES DIVIDE POWER
 %token LEFT RIGHT 
 %token END
@@ -35,8 +35,21 @@ void yyerror(const char* s);
 %start Input
 %%
 
-Input: 					{printf("%s >> ", getenv("HOME"));}
-     | Input Line 			{printf("%s >> ", getenv("HOME"));}
+Input: 					{	char shellName[1024] = "MyShell:";
+							char dir[1024];
+							getcwd(dir, sizeof(dir));
+							strcat(shellName,dir);
+							strcat(shellName,">> ");
+							printf("%s",shellName); 
+						}
+     | Input Line 			
+						{	char shellName[1024] = "MyShell:";
+							char dir[1024];
+							getcwd(dir, sizeof(dir));
+							strcat(shellName,dir);
+							strcat(shellName,">> ");
+							printf("%s",shellName); 
+						}
 ;
 
 Line:
@@ -47,6 +60,18 @@ Line:
      | QUIT END 							{ printf("Saindo do shell \n"); exit(0); }
      | KILL NUMBER END 				{char commandS[1024]; int n; n=(int)$2; snprintf(commandS, 1024, "kill %d", n); system(commandS); }
      | MKDIR STRING END 				{char cmd[1024]; strcpy(cmd,"/bin/mkdir ");strcat(cmd, $2); system(cmd); }
+     | RMDIR STRING END 				{char cmd[1024]; strcpy(cmd,"/bin/rmdir ");strcat(cmd, $2); system(cmd); }
+     | CD STRING END 					{	
+											int response = 0;
+						   					char dir_path[1024];
+						   					getcwd(dir_path, sizeof(dir_path));
+						   					strcat(dir_path, "/");
+						   					strcat(dir_path, $2);
+											response = chdir(dir_path);
+											if(response != 0){
+												printf("Erro! Diretorio nao encontrado!\n");
+											}
+										}
 ;
 
 Expression:
