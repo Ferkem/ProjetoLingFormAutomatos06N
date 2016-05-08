@@ -20,7 +20,7 @@ void yyerror(const char* s);
 
 %token <pfloat> NUMBER
 %token <sval> STRING
-%token PS KILL LS QUIT CALCULO MKDIR RMDIR CD TOUCH IFCONFIG START
+%token PS KILL LS QUIT CALCULO MKDIR RMDIR CD TOUCH IFCONFIG START ERROR
 %token PLUS MINUS TIMES DIVIDE POWER
 %token LEFT RIGHT 
 %token END
@@ -35,7 +35,7 @@ void yyerror(const char* s);
 %start Input
 %%
 
-Input: 					{	char shellName[1024] = "MyShell:";
+Input: 					{	char shellName[1024] = "MyPersonalShell:";
 							char dir[1024];
 							getcwd(dir, sizeof(dir));
 							strcat(shellName,dir);
@@ -43,7 +43,7 @@ Input: 					{	char shellName[1024] = "MyShell:";
 							printf("%s",shellName); 
 						}
      | Input Line 			
-						{	char shellName[1024] = "MyShell:";
+						{	char shellName[1024] = "MyPersonalShell:";
 							char dir[1024];
 							getcwd(dir, sizeof(dir));
 							strcat(shellName,dir);
@@ -72,9 +72,11 @@ Line:
 												printf("Erro! Diretorio nao encontrado!\n");
 											}
 										}
-     | TOUCH STRING END 			       {char cmd[1024]; strcpy(cmd,"/bin/touch ");strcat(cmd, $2); system(cmd); }
-     | IFCONFIG END 				       {system("ifconfig"); }
-     | START STRING END 				{system($2); }
+     | TOUCH STRING END 			        {char cmd[1024]; strcpy(cmd,"/bin/touch ");strcat(cmd, $2); system(cmd); }
+     | IFCONFIG END 				        {system("ifconfig"); }
+     | START STRING END 				{char start[1024]; strcpy(start, $2); strcat(start, "&"); system(start);}
+     |STRING END 						{yyerror("Comando Desconhecido") ; return(0);}
+     |ERROR END 						{yyerror("Comando Desconhecido") ; return(0);}
 ;
 
 Expression:
@@ -97,6 +99,7 @@ int main() {
 	} while(!feof(yyin));
 	return 0;
 }
+
 void yyerror(const char* s) {
 	fprintf(stderr, "Comando/Argumento nao valido. Erro: %s\n", s);
 }
