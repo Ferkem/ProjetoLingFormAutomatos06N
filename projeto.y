@@ -75,8 +75,7 @@ Line:
      | TOUCH STRING END 			        {char cmd[1024]; strcpy(cmd,"/bin/touch ");strcat(cmd, $2); system(cmd); }
      | IFCONFIG END 				        {system("ifconfig"); }
      | START STRING END 				{char start[1024]; strcpy(start, $2); strcat(start, "&"); system(start);}
-     |STRING END 						{yyerror("Comando Desconhecido") ; return(0);}
-     |ERROR END 						{yyerror("Comando Desconhecido") ; return(0);}
+     | ERROR END 						{yyerror("Comando Invalido") ; return(0);}
 ;
 
 Expression:
@@ -101,5 +100,5 @@ int main() {
 }
 
 void yyerror(const char* s) {
-	fprintf(stderr, "Comando/Argumento nao valido. Erro: %s\n", s);
+	printf("Error: %s\n", s);
 }

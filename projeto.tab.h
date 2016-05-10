@@ -46,26 +46,46 @@ extern int yydebug;
   enum yytokentype
   {
     NUMBER = 258,
-    PLUS = 259,
-    MINUS = 260,
-    TIMES = 261,
-    DIVIDE = 262,
-    POWER = 263,
-    LEFT = 264,
-    RIGHT = 265,
-    END = 266,
-    LS = 267,
-    PS = 268,
-    QUIT = 269,
-    CALCULO = 270,
-    KILL = 271,
-    NEG = 272
+    STRING = 259,
+    PS = 260,
+    KILL = 261,
+    LS = 262,
+    QUIT = 263,
+    CALCULO = 264,
+    MKDIR = 265,
+    RMDIR = 266,
+    CD = 267,
+    TOUCH = 268,
+    IFCONFIG = 269,
+    START = 270,
+    ERROR = 271,
+    PLUS = 272,
+    MINUS = 273,
+    TIMES = 274,
+    DIVIDE = 275,
+    POWER = 276,
+    LEFT = 277,
+    RIGHT = 278,
+    END = 279,
+    NEG = 280
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+
+union YYSTYPE
+{
+#line 15 "projeto.y" /* yacc.c:1909  */
+
+	int integer;
+	float pfloat;
+	char *sval;
+
+#line 86 "projeto.tab.h" /* yacc.c:1909  */
+};
+
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
