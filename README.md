@@ -1,6 +1,4 @@
-# ProjetoLingFormAutomatos06N
-Repositório para projeto da disciplina de Linguagens Formais e Autômatos
-
+# ProjetoMyShell
 --Intrucoes de Uso:
 1)compilar bison: 
 bison -d projeto.y
@@ -12,3 +10,5 @@ flex  -o projeto.lex.c projeto.lex
 gcc -o projeto projeto.lex.c projeto.tab.c -lfl -lm
 
 4)executar o programa: ./projeto
+
+Repositório para projeto da disciplina de Linguagens Formais e Autômatos
