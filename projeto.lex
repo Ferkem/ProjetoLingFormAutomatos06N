@@ -15,17 +15,19 @@ real {integer}("."{integer})?{exponent}?
 %%
 
 [ \t]          ;
+
 {white} { }
 {real} { yylval.pfloat=atof(yytext); 
  return NUMBER;
 }
-"+" 			return PLUS;
-"-" 			return MINUS;
-"*" 			return TIMES;
-"/" 			return DIVIDE;
-"^" 			return POWER;
-"(" 			return LEFT;
-")" 			return RIGHT;
+
+"+" 		return PLUS;
+"-" 		return MINUS;
+"*" 		return TIMES;
+"/" 		return DIVIDE;
+"^" 		return POWER;
+"(" 		return LEFT;
+")" 		return RIGHT;
 "ls" 		return LS;
 "ps" 		return PS;
 "quit" 		return QUIT;
@@ -35,7 +37,7 @@ real {integer}("."{integer})?{exponent}?
 "rmdir" 	return RMDIR;
 "cd" 		return CD;
 "touch" 	return TOUCH;
-"ifconfig"  return IFCONFIG;
+"ifconfig"  	return IFCONFIG;
 "start"         return START;
 
 [a-zA-Z0-9._]+[.]?[a-zA-Z0-9]*   {
@@ -44,6 +46,6 @@ real {integer}("."{integer})?{exponent}?
 }
 
 \n             	return END;
-.       		return ERROR;
+.       	return ERROR;
 
 %%
