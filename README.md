@@ -1,6 +1,6 @@
 # ProjetoMyShell
 
---Intrucoes de Uso:
+--Intrucoes de Uso: 
 
 1)compilar bison: 
 bison -d projeto.y
